@@ -1,0 +1,5 @@
+# #安装lsscsi
+# sudo apt install -y lsscsi
+# #使用lsscsi命令获取到linux系统上所有的磁盘盘符信息
+# #ps x 打印所有进程信息，lsscsi磁盘信息，sed -n '2p'打印第二行，awk '{print $7}'输出指定第七列，cut -c 6-8提取第6个字母到第8个字母
+#BDEV=$(ps x | lsscsi |sed -n '1p'| awk '{print $7}' | cut -c 6-8)
