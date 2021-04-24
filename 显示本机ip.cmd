@@ -1,7 +1,7 @@
 @echo off
-title ╠╬╩Зпео╒
+title Ф°╛Ф°╨Д©║Ф│╞
 color 0C
 ipconfig /all
 
-echo пео╒ря╠ё╢Фтз║╬╠╬╩Зпео╒.txt║©
+echo Ц─░Ф°╛Ф°╨ipЦ─▒
 pause
