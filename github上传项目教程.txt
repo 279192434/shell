@@ -1,0 +1,105 @@
+上传之前记得拷贝仓库一份到本地，然后再建本地仓库
+git clone https://github.com/username/cangku.git
+上传超过100M大文件方法在文本最后
+
+git init			#建立仓库
+git add .			#所有文件
+git add README.md  	#单个文件
+git commit -m "说明"
+git branch -M main		#执行生效
+git remote add origin git@github.com:username/cangku.git
+git push -u origin main	#同步到服务器
+
+第一次安装好git客户端后生成密钥文件
+
+输入一下命令，直接按回车
+ssh-keygen -t rsa -C "email"  # email为你在github上注册的邮箱
+打开C:\Users\username\.ssh，可以看到id_rsa.pub这个文件 #用户文件目录下
+在github setting里添加SSH keys
+
+ssh -T git@github.com #在Git Shell下输入命令测试刚才的公钥是否认证正确
+
+git clone https://github.com/项目地址
+打开git 窗口，输入git clone git@github.com:***/test.git复制的地址，按回车执行
+git执行结束后，你可以看到你本机出现了github上的代码，至此代码成功从github上clone下来
+最好先clone下来一份再上传，不然后面报错
+
+第一步：建立git仓库，cd到你的本地项目根目录下，执行git命令
+windows系统下，进去到clone下来的项目目录，右键打开Git Bash Here即可
+git init
+
+第二步：将项目的所有文件添加到仓库中
+git lfs install	 #安装传大文件插件
+git lfs track "*.psd"    #大文件，超过50M的都添加上
+git add .gitattributes #确保设置生效，要先把这个传上去
+git add .
+	第一次运行
+ git config --global user.email "you@example.com"
+ git config --global user.name "Your Name"
+
+第三步：git status：查看现在的状态，将add的文件commit到仓库
+		
+git commit -m "注释语句"          #上传说明
+git branch -M main		#执行生效
+
+第四步：去github上创建自己的Repository，创建后的页面如下图所示：
+点击Clone or download按钮，复制弹出的地址git@github.com:***/test.git，记得要用SSH的地址，尽量不要用HTTPS的地址
+
+第五步：将本地的仓库关联到github上---把上一步复制的地址放到下面
+git remote add origin git@github.com:***/test.git
+
+第六步：上传github之前，要先pull一下，执行如下命令：
+git pull origin master
+
+第七步，上传代码到github远程仓库
+git push origin master : 把本地库的所有内容推送到远程仓库（github）上，即上传本地文件
+git push -u origin master
+
+上传报错
+git remote rm origin # 移出旧的http的origin
+git remote add origin https://xxx@xxx/B.git # 添加新的git方式的origin 
+git remote -v    # 查看remote链接
+方式一：输入“ git pull --rebase origin master ” ，然后输入git push origin master语句，即可
+方式二：输入“ git pull origin master --allow-unrelated-histories ”（会弹到文件里面，输入“:wq”退出该文件，如果没有遇到，请忽略），然后输入git push origin master语句，即可
+
+更新仓库文件
+如果对本地文件有了修改，则需要对仓库文件进行更新，比如本地文件中删除了一个文件。 下面将显示如何对仓库更新。
+首先进入你的master文件夹下，右键打开“Git Bash Here” ，弹出命令窗口 ，输入如下内容
+输入 以下文本即可更新仓库
+git status
+git add -A
+git commit -a -m "update" ： 能提交修改过，但是没有添加到缓存区的文件（修改过的就能提交）
+git push origin master -f
+
+删除github中的某个文件(夹)
+github上只能删除仓库，但是，却无法删除文件或文件夹，所以只能通过命令来解决。
+首先进入你的master文件夹下，右键打开“Git Bash Here” ，弹出命令窗口 ，输入如下内容
+git pull origin master  # 将远程仓库里面的项目拉下来
+ dir  # 查看有哪些文件夹
+ git rm -r --cached picture  # 删除picture文件夹
+ git commit -m "删除了picture文件夹"  # 提交,添加操作说明
+ git push origin master  # 将本次更改更新到github项目上去
+
+
+GitHub是我们常用的代码托管平台，但GitHub有一个限制，不能上传超过100M的文件。想要上传超过100M的文件，就需要借助Git LFS。
+首先下载git-lfs（https://github.com/git-lfs/git-lfs），安装好后进入本地仓库目录，执行下面的命令。
+git lfs install
+git lfs track "file"
+git lfs track "file"
+多个文件添加多次
+file是需要上传的大文件。执行完命令后会发现目录下生成了一个".gitattributes"文件，文件内记录了我们要上传文件的信息。只有先把".gitattributes"传上去，才可以上传大文件。
+git add .gitattributes
+git commit -m "submit file"
+git push -u origin master 
+上传完毕后，开始上传大文件。
+git add file
+git commit -m "add file"
+git push -u origin master
+
+安装上传大文件工具
+wget https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+sudo apt-get install git-lfs
+git lfs install
+
+
+
