@@ -1,60 +1,6 @@
-﻿#!/bin/bash
-Client_CaName=client-$1.254
-if [ -z $Client_CaName ];then
-	echo "输入参数: client-参数.254"
-	echo "例 增加106网段: bash client.sh 106"
-	exit 0
-fi
-
-cp /etc/apt/sources.list /etc/apt/sources.list.bak
-cat>/etc/apt/sources.list<<EOF
-#阿里云源 
-deb http://mirrors.aliyun.com/ubuntu/ disco main restricted universe multiverse 
-deb-src http://mirrors.aliyun.com/ubuntu/ disco main restricted universe multiverse 
-deb http://mirrors.aliyun.com/ubuntu/ disco-security main restricted universe multiverse 
-deb-src http://mirrors.aliyun.com/ubuntu/ disco-security main restricted universe multiverse 
-deb http://mirrors.aliyun.com/ubuntu/ disco-updates main restricted universe multiverse 
-deb-src http://mirrors.aliyun.com/ubuntu/ disco-updates main restricted universe multiverse 
-deb http://mirrors.aliyun.com/ubuntu/ disco-backports main restricted universe multiverse 
-deb-src http://mirrors.aliyun.com/ubuntu/ disco-backports main restricted universe multiverse 
-deb http://mirrors.aliyun.com/ubuntu/ disco-proposed main restricted universe multiverse 
-deb-src http://mirrors.aliyun.com/ubuntu/ disco-proposed main restricted universe multiverse 
-#中科大源 
-deb https://mirrors.ustc.edu.cn/ubuntu/ disco main restricted universe multiverse 
-deb-src https://mirrors.ustc.edu.cn/ubuntu/ disco main restricted universe multiverse 
-deb https://mirrors.ustc.edu.cn/ubuntu/ disco-updates main restricted universe multiverse 
-deb-src https://mirrors.ustc.edu.cn/ubuntu/ disco-updates main restricted universe multiverse 
-deb https://mirrors.ustc.edu.cn/ubuntu/ disco-backports main restricted universe multiverse 
-deb-src https://mirrors.ustc.edu.cn/ubuntu/ disco-backports main restricted universe multiverse 
-deb https://mirrors.ustc.edu.cn/ubuntu/ disco-security main restricted universe multiverse 
-deb-src https://mirrors.ustc.edu.cn/ubuntu/ disco-security main restricted universe multiverse 
-deb https://mirrors.ustc.edu.cn/ubuntu/ disco-proposed main restricted universe multiverse 
-deb-src https://mirrors.ustc.edu.cn/ubuntu/ disco-proposed main restricted universe multiverse 
-#163源 
-deb http://mirrors.163.com/ubuntu/ disco main restricted universe multiverse 
-deb http://mirrors.163.com/ubuntu/ disco-security main restricted universe multiverse 
-deb http://mirrors.163.com/ubuntu/ disco-updates main restricted universe multiverse 
-deb http://mirrors.163.com/ubuntu/ disco-proposed main restricted universe multiverse 
-deb http://mirrors.163.com/ubuntu/ disco-backports main restricted universe multiverse 
-deb-src http://mirrors.163.com/ubuntu/ disco main restricted universe multiverse 
-deb-src http://mirrors.163.com/ubuntu/ disco-security main restricted universe multiverse 
-deb-src http://mirrors.163.com/ubuntu/ disco-updates main restricted universe multiverse 
-deb-src http://mirrors.163.com/ubuntu/ disco-proposed main restricted universe multiverse 
-deb-src http://mirrors.163.com/ubuntu/ disco-backports main restricted universe multiverse 
-#清华源 
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ disco main restricted universe multiverse 
-deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ disco main restricted universe multiverse 
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ disco-updates main restricted universe multiverse 
-deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ disco-updates main restricted universe multiverse 
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ disco-backports main restricted universe multiverse 
-deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ disco-backports main restricted universe multiverse 
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ disco-security main restricted universe multiverse 
-deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ disco-security main restricted universe multiverse 
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ disco-proposed main restricted universe multiverse 
-deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ disco-proposed main restricted universe multiverse
-EOF
-
-apt update
+#!/bin/bash
+#---------------------------------------------------------------------------------
+Client_CaName="clientap6.ovpn"
 if [ $? -eq 0 ];then
    apt install openvpn vim net-tools nload openssh-server -y
 else
@@ -80,8 +26,8 @@ EOF
 
 cat>/root/check.sh<<EOF
 #!/bin/bash
-echo "nameserver 8.8.4.4" > /etc/resolv.conf
-echo "nameserver 114.114.114.114" >> /etc/resolv.conf
+echo "nameserver 114.114.114.114" > /etc/resolv.conf
+echo "nameserver 8.8.4.4" >> /etc/resolv.conf
 echo "nameserver 9.9.9.9" >> /etc/resolv.conf
 echo "nameserver 8.8.8.8" >> /etc/resolv.conf
 Bin=/root/start.sh
@@ -132,17 +78,12 @@ EOF
 echo 1 > /proc/sys/net/ipv4/ip_forward
 chmod +x /etc/rc.local
 
+cat /etc/sysctl.conf|grep 'net.ipv4.ip_forward'
+if [ $? -ne 0 ];then
 cat >>/etc/sysctl.conf<<EOF
 net.ipv4.ip_forward = 1
 net.core.default_qdisc=fq
 net.ipv4.tcp_congestion_control=bbr
 EOF
-#cat /etc/sysctl.conf|grep 'net.ipv4.ip_forward'
-#if [ $? -ne 0 ];then
-#cat >>/etc/sysctl.conf<<EOF
-#net.ipv4.ip_forward = 1
-#net.core.default_qdisc=fq
-#net.ipv4.tcp_congestion_control=bbr
-#EOF
-#fi
+fi
 sysctl -p
