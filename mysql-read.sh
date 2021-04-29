@@ -35,6 +35,10 @@ mysql -N <<EOF>mysql.txt
     select distinct callerip from vos3000.e_cdr_$TIME where endreason = -9;
     COMMIT;
 EOF
+# 查询数据库并赋值
+# result=$(mysql -h$Host -u$User -p$PW -N -e "use vos3000;select distinct callerip from vos3000.e_cdr_20210425 where endreason = -9;")
+# TOP1=$(echo $result | awk -F " " '{print $1'})
+# echo $TOP1
 # 去重查询vos3000数据库下e_cdr_20210424表中的callerip列并且还要endreason列中的数据等于-9的数据
 # select distinct callerip from vos3000.e_cdr_20210424 where endreason = -9;
 
@@ -69,3 +73,29 @@ echo "防火墙规则去重完成"
 #查看防火墙规则
 #cat /etc/sysconfig/iptables
 iptables -L INPUT -n --line-numbers
+
+# #给脚本加执行权限
+# chmod 777 mysql-read.sh
+
+# #安装cron服务
+# yum install -y vixie-cron
+# yum install crontabs
+# #把crond服务添加到系统启动项
+# chkconfig crond on
+# #开启定时服务，一般是默认开启的
+# service crond start
+# #检查crontab服务是否启动：
+# #service crond status
+# #查看本机的所有定时任务
+# #tail -f /var/log/cron
+
+
+# 利用系统crontab实现每天自动运行
+# crontab -e
+
+# #开启定时服务，一般是默认开启的
+# service crond start
+# 编辑添加定时任务
+# crontab -e
+# #每十分钟运行一次脚本,根据脚本放置的目录
+# */10 * * * * /root/mysql-read.sh
