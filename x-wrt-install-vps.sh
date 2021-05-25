@@ -16,6 +16,5 @@ cp $vmroot/x-wrt.img.gz /tmp/x-wrt.img.gz && {
 	umount $vmroot
 	sync
 	(zcat /tmp/x-wrt.img.gz;
-	 echo open=443,network=$network;
 	) >/dev/$BDEV && reboot
 }
